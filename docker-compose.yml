@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+    postgres:
+        image: postgres
+        ports:
+            - '5434:5432'
+        environment:
+            POSTGRES_HOST: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: fjob
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    nestjs:
+        build: .
+        command: npm run dev
+        volumes:
+            - .:/app
+        ports:
+            - '8000:8000'
+        depends_on:
+            - postgres
+        environment:
+            POSTGRES_HOST: postgres
+            POSTGRES_PORT: 5432
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+
+volumes:
+    postgres_data:
